@@ -1,19 +1,19 @@
 import type { SavedSession, Party, Moveset } from "./types";
 
-import { setupNetworkHooks } from "./injected_network.js";
+import { setupNetworkHooks } from "./injected-network.js";
 import {
   getMoveLookup,
   buildMovesInfo,
   deriveEnemyTypesFromSession,
   guessEnemyTypes,
-} from "./injected_data.js";
+} from "./injected-data.js";
 import {
   updateOverlay,
   clearBadges,
   observeTouchControls,
   showOverlay,
   hideOverlay,
-} from "./injected_ui.js";
+} from "./injected-ui.js";
 
 const TAG = "[PME injected]";
 

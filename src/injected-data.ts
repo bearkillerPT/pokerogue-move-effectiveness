@@ -1,5 +1,6 @@
 import type { SavedSession, Party, Moveset } from "./types";
-import type { Move } from "./types.d";
+import moves from "./data/moves.js";
+import pokedex from "./data/pokedex.js";
 
 type MoveLookupValue = { name?: string | null; type?: string | null };
 
@@ -32,11 +33,9 @@ export function getExternalMoveMap(): Map<number, MoveLookupValue> {
   if (_externalMoveMap) return _externalMoveMap;
   const map: Map<number, MoveLookupValue> = new Map();
   try {
-    const moves = window.__PME_MOVES;
-    if (Array.isArray(moves))
-      for (const move of moves) {
-        map.set(Number(move.id), { name: move.ename, type: move.type });
-      }
+    for (const move of moves) {
+      map.set(Number(move.id), { name: move.ename, type: move.type });
+    }
   } catch (e) {
     // ignore
   }
@@ -244,9 +243,8 @@ export function buildMovesInfo(
 export function deriveEnemyTypesFromSession(
   session: SavedSession | null
 ): string[] {
-  const pokedex = window.__PME_POKEDEX;
-  if (!pokedex || !session) return [];
-  return window.__PME_POKEDEX?.[session.enemyParty[0].species - 1]?.type || [];
+  if (!session) return [];
+  return pokedex[session.enemyParty[0].species - 1]?.type || [];
 }
 
 export function guessEnemyTypes(enemy: Party | null | undefined): string[] {

@@ -1,4 +1,4 @@
-import type { Pokemon } from "../types.d";
+import type { Pokemon } from "../types";
 
 export default [
   {
