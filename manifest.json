@@ -11,7 +11,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dist/injected.js", "dist/styles.css", "dist/moves.js", "dist/moves-bootstrap.js"],
+      "resources": ["src/styles.css", "dist/*"],
       "matches": ["https://pokerogue.net/*"]
     }
   ]

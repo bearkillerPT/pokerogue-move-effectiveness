@@ -1,3 +1,18 @@
+declare global {
+  interface Window {
+    __PME_MOVES?: Move[];
+    __PME_POKEDEX?: Pokemon[];
+    // allow indexing dynamic global properties discovered at runtime
+    [key: string]: any;
+  }
+
+  // allow attaching a private field used by the injected XHR wrapper
+  interface XMLHttpRequest {
+    _pme_url?: string;
+  }
+}
+
+// Moves.js move type
 export interface Move {
   id: number;
   ename?: string | null;
@@ -11,30 +26,51 @@ export interface Move {
   category?: string | null;
 }
 
-export interface LooseValue {
-  [key: string]:
-    | string
-    | number
-    | boolean
-    | null
-    | undefined
-    | string[]
-    | number[]
-    | Array<string | number | null | boolean>
-    | object;
+// Pokedex.js Pokemon type
+export interface Pokemon {
+  id: number
+  name: Name
+  type: string[]
+  base: Base
+  species: string
+  description: string
+  evolution: Evolution
+  profile: Profile
+  image: Image
 }
 
-declare global {
-  interface Window {
-    __PME_MOVES?: Move[];
-    // allow indexing dynamic global properties discovered at runtime
-    [key: string]: LooseValue | undefined;
-  }
-
-  // allow attaching a private field used by the injected XHR wrapper
-  interface XMLHttpRequest {
-    _pme_url?: string;
-  }
+export interface Name {
+  english: string
+  japanese: string
+  chinese: string
+  french: string
 }
 
-export {};
+export interface Base {
+  HP: number
+  Attack: number
+  Defense: number
+  "Sp. Attack": number
+  "Sp. Defense": number
+  Speed: number
+}
+
+export interface Evolution {
+  next: string[][]
+}
+
+export interface Profile {
+  height: string
+  weight: string
+  egg: string[]
+  ability: string[][]
+  gender: string
+}
+
+export interface Image {
+  sprite: string
+  thumbnail: string
+  hires: string
+}
+
+export default {};

@@ -16,6 +16,7 @@
     "outDir": "dist",
     "lib": ["DOM", "ES2020"]
   },
+  "files": ["src/types.d.ts"],
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

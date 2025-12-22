@@ -26,4 +26,4 @@ Since this project uses TypeScript, you're required to compile it to JavaScript 
 
 ## Credits
 This extension is heavily "inspired" by the [RogueDex extension](https://github.com/roguedex-dev/roguedex). While no code was directly copied, many ideas and techniques were borrowed from it.
-The moves DB was sourced from [pokemon-data.json](https://github.com/Purukitto/pokemon-data.json).
+The moves and pokedex DBs were sourced from [pokemon-data.json](https://github.com/Purukitto/pokemon-data.json).
