@@ -1,0 +1,15 @@
+{
+  "name": "pokerogue-move-effectiveness",
+  "version": "0.1.0",
+  "private": false,
+  "devDependencies": {
+    "@types/chrome": "^0.0.199",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "tsc-watch --project tsconfig.json"
+  },
+  "dependencies": {
+    "tsc-watch": "^7.2.0"
+  }
+}

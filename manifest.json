@@ -6,12 +6,12 @@
   "content_scripts": [
     {
       "matches": ["https://pokerogue.net/*"],
-      "js": ["content.js"]
+      "js": ["dist/content.js"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["injected.js", "styles.css", "moves.js", "moves-bootstrap.js"],
+      "resources": ["dist/injected.js", "dist/styles.css", "dist/moves.js", "dist/moves-bootstrap.js"],
       "matches": ["https://pokerogue.net/*"]
     }
   ]
