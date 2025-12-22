@@ -1,4 +1,4 @@
-[{
+export default [{
         "english": "Normal",
         "chinese": "一般",
         "japanese": "ノーマル",
@@ -142,4 +142,4 @@
         "ineffective": ["Fire", "Poison", "Steel"],
         "no_effect": []
     }
-]
+];
