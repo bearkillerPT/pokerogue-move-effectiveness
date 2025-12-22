@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "PokeRogue Move Effectiveness",
+  "description": "Shows move effectiveness (x2, x0.5, immune) in PokéRogue.",
+  "version": "0.1.0",
+  "content_scripts": [
+    {
+      "matches": ["https://pokerogue.net/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js", "styles.css", "moves.js", "moves-bootstrap.js"],
+      "matches": ["https://pokerogue.net/*"]
+    }
+  ]
+}
