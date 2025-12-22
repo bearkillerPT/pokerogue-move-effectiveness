@@ -1,4 +1,4 @@
-import type { Move, LooseValue } from './types.d';
+import type { LooseValue } from './types.d';
 
 const TAG = '[PME injected]';
 

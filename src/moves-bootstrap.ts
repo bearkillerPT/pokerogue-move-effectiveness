@@ -1,4 +1,3 @@
-import type { Move } from "./types.d";
 import moves from "./moves.js";
 
 (async function () {

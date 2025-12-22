@@ -1,5 +1,3 @@
-// Project-wide lightweight types. Keep these strict and avoid `any`/`unknown`.
-
 export interface Move {
   id: number;
   ename?: string | null;
@@ -13,8 +11,6 @@ export interface Move {
   category?: string | null;
 }
 
-// A small, permissive structural type for objects we read from the page.
-// We avoid `any`/`unknown` by enumerating likely primitive shapes and arrays.
 export interface LooseValue {
   [key: string]:
     | string
