@@ -3,9 +3,6 @@ const TAG = "[PME injected-ui]";
 export function ensureOverlay(): HTMLElement {
   const existing = document.getElementById("pme-overlay");
   if (existing) return existing;
-  const s = document.createElement("style");
-  s.textContent = `#pme-overlay{position:fixed;top:12px;right:12px;z-index:2147483647;background:rgba(0,0,0,0.8);color:#fff;padding:10px 12px;border-radius:10px;font-size:18px;line-height:1.1;font-family:Arial,Helvetica,sans-serif;max-width:520px;pointer-events:none}#pme-overlay .pme-header{margin:0 0 8px 0;display:flex;gap:12px;align-items:center;opacity:0.9}#pme-overlay .pme-header .pme-name{font-weight:700}#pme-overlay .pme-col-title{font-size:14px;opacity:0.85;min-width:74px;text-align:center}#pme-overlay .pme-line{margin:6px 0;display:flex;gap:12px;align-items:center}#pme-overlay .pme-name{opacity:0.95;font-size:18px;min-width:120px}#pme-overlay .pme-cols{display:flex;gap:8px;align-items:center}#pme-overlay .pme-val{font-weight:900;font-size:20px;padding:2px 8px;border-radius:6px;color:#fff;min-width:74px;text-align:center}#pme-overlay .pme-super{background:#27ae60}#pme-overlay .pme-not-very{background:#e67e22}#pme-overlay .pme-immune{background:#c0392b}#pme-overlay .pme-neutral{background:#7f8c8d}`;
-  document.head.appendChild(s);
   const d = document.createElement("div");
   d.id = "pme-overlay";
   d.style.display = "none";
@@ -22,8 +19,6 @@ export function updateOverlay(
   enemyNames: string[]
 ) {
   const overlay = ensureOverlay();
-  // currentUiMode is managed by the orchestrator; overlay only shows in FIGHT mode
-  // Caller should decide when to call updateOverlay based on UI mode.
   if (!movesInfo || movesInfo.length === 0) {
     overlay.innerHTML =
       '<div class="pme-line"><div class="pme-name">No moves detected</div><div class="pme-val">-</div></div>';
