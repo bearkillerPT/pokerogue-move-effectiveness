@@ -11,8 +11,7 @@
     {
       "matches": ["https://pokerogue.net/*"],
       "css": ["src/styles/overlay.css"],
-      "js": ["dist/content.js"],
-      "run_at": "document_start"
+      "js": ["dist/content.js"]
     }
   ],
 

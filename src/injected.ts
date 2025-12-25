@@ -92,7 +92,7 @@ export function observePokemonNameChanges() {
         !enemyPokemons.includes(doubleWildEnemyMatch2[2])
       ) {
         console.log("doubleWildEnemyMatch2", doubleWildEnemyMatch2, lastEnemyPushTime, Date.now() - lastEnemyPushTime);
-        if (Date.now() - lastEnemyPushTime > 1000) {
+        if (Date.now() - lastEnemyPushTime > 5000) {
           enemyPokemons = [];
         }
 
