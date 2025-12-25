@@ -81,13 +81,12 @@ export function multiplierClass(m: number): string {
 export function buildMovesInfo(
   moves: Array<Moveset | number>,
   moveLookup: Map<number, MoveLookupValue>,
-  enemyTypes: string[]
-): Array<{ name?: string | null; text?: string; cls?: string; id?: number }> {
+  enemyTypes: string[][]
+): Array<{ name?: string | null; id?: number; values: Array<{ text: string; cls: string }> }> {
   const out: Array<{
     name?: string | null;
-    text?: string;
-    cls?: string;
     id?: number;
+    values: Array<{ text: string; cls: string }>;
   }> = [];
   for (const m of moves) {
     const id =
@@ -105,36 +104,16 @@ export function buildMovesInfo(
         mType = resolved.type;
       }
     }
-    const mult = getMultiplier(
-      mType,
-      enemyTypes || []
-    );
-    const text = formatMultiplier(mult);
-    const cls = multiplierClass(mult);
-    out.push({ name, text, cls, id: id as number | undefined });
+    const values = (enemyTypes || []).map((typesForEnemy) => {
+      const mult = getMultiplier(mType, typesForEnemy || []);
+      return { text: formatMultiplier(mult), cls: multiplierClass(mult) };
+    });
+    out.push({ name, id: id as number | undefined, values });
   }
   return out;
 }
 
-export function deriveEnemyTypesFromSession(
-  session: SavedSession | null
-): string[] {
-  if (!session) return [];
-  return pokedex[session.enemyParty[0].species - 1]?.type || [];
-}
-
-export function guessEnemyTypes(enemy: Party | null | undefined): string[] {
-  if (!enemy) return [];
-  const custom = (enemy as unknown as Record<string, unknown>)[
-    "customPokemonData"
-  ] as Record<string, unknown> | undefined;
-  const fusion = (enemy as unknown as Record<string, unknown>)[
-    "fusionCustomPokemonData"
-  ] as Record<string, unknown> | undefined;
-  if (Array.isArray(custom?.types))
-    return (custom!.types as unknown[]).map((t) => `${t}`);
-  if (Array.isArray(fusion?.types))
-    return (fusion!.types as unknown[]).map((t) => `${t}`);
-  // no direct `type` string on strict Party; return empty if unknown
-  return [];
+export function deriveEnemyTypes(enemyPokemons: string[]): string[][] {
+  return enemyPokemons
+    .map((ep) => pokedex.find((p) => p.name.english === ep)?.type || []);
 }

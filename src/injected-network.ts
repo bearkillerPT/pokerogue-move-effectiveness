@@ -15,15 +15,15 @@ export function setupNetworkHooks(onSession: (s: SavedSession | null) => void): 
           url.includes('api.pokerogue.net/savedata/update') ||
           url.includes('api.pokerogue.net/savedata/updateall')
         ) {
-          response.clone().json().then((data: unknown) => {
-              const hasSession = data && typeof data === 'object' && 'session' in (data as Record<string, unknown>);
-              const session = hasSession ? ((data as unknown as { session?: unknown }).session ?? data) : data;
-              try {
-                onSession(session as SavedSession | null);
-              } catch (e) {
-                console.error(`${TAG} onSession error`, e);
-              }
-            }).catch(() => { /* ignore non-json responses */ });
+          response.clone().json().then((data: any) => {
+            const hasSession = data && typeof data === 'object' && 'session' in data;
+            const session = hasSession ? (data as any & { session?: any }).session ?? (data as any) : (data as any);
+            try {
+              onSession(session as SavedSession | null);
+            } catch (e) {
+              console.error(`${TAG} onSession error`, e);
+            }
+          }).catch(() => { /* ignore non-json responses */ });
         }
       } catch (e) {
         // ignore
@@ -38,16 +38,13 @@ export function setupNetworkHooks(onSession: (s: SavedSession | null) => void): 
 
   // Intercept XHR
   try {
-    const XHRProto = XMLHttpRequest.prototype as unknown as {
-      open: (this: XMLHttpRequest, method: string, url: string, async?: boolean, user?: string | null, password?: string | null) => void;
-      send: (this: XMLHttpRequest, body?: Document | BodyInit | null) => void;
-    };
+    const XHRProto = XMLHttpRequest.prototype as any;
     const origOpen = XHRProto.open as (this: XMLHttpRequest, method: string, url: string, async?: boolean, user?: string | null, password?: string | null) => void;
     const origSend = XHRProto.send as (this: XMLHttpRequest, body?: Document | BodyInit | null) => void;
 
     XHRProto.open = function (this: XMLHttpRequest, method: string, url: string, async?: boolean, user?: string | null, password?: string | null) {
       try {
-  (this as unknown as { _pme_url?: string })._pme_url = url;
+        (this as any)._pme_url = url;
       } catch (e) {
         // noop
       }
@@ -58,15 +55,16 @@ export function setupNetworkHooks(onSession: (s: SavedSession | null) => void): 
       try {
         this.addEventListener('load', function (this: XMLHttpRequest) {
           try {
-            const u = (this as unknown as { _pme_url?: string })._pme_url || this.responseURL || '';
+            const u = (this as any)._pme_url || this.responseURL || '';
             if (
               u &&
               (u.includes('api.pokerogue.net/savedata/session') || u.includes('api.pokerogue.net/savedata/update') || u.includes('api.pokerogue.net/savedata/updateall'))
             ) {
               try {
-                const data = JSON.parse(this.responseText || '{}') as unknown;
-                const hasSession = data && typeof data === 'object' && 'session' in (data as Record<string, unknown>);
-                const session = hasSession ? ((data as unknown as { session?: unknown }).session ?? data) : data;
+                const data = JSON.parse(this.responseText || '{}') as any;
+                console.log(data)
+                const hasSession = data && typeof data === 'object' && 'session' in data;
+                const session = hasSession ? (data as any & { session?: any }).session ?? (data as any) : (data as any);
                 onSession(session as SavedSession | null);
               } catch (e) {
                 // ignore parse errors

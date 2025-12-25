@@ -4,7 +4,7 @@ export function ensureOverlay(): HTMLElement {
   const existing = document.getElementById("pme-overlay");
   if (existing) return existing;
   const s = document.createElement("style");
-  s.textContent = `#pme-overlay{position:fixed;top:12px;right:12px;z-index:2147483647;background:rgba(0,0,0,0.8);color:#fff;padding:10px 12px;border-radius:10px;font-size:18px;line-height:1.1;font-family:Arial,Helvetica,sans-serif;max-width:360px;pointer-events:none}#pme-overlay .pme-line{margin:6px 0;display:flex;justify-content:space-between;gap:12px;align-items:center}#pme-overlay .pme-name{opacity:0.95;font-size:18px}#pme-overlay .pme-val{font-weight:900;font-size:20px;padding:2px 8px;border-radius:6px;color:#fff}#pme-overlay .pme-super{background:#27ae60}#pme-overlay .pme-not-very{background:#e67e22}#pme-overlay .pme-immune{background:#c0392b}#pme-overlay .pme-neutral{background:#7f8c8d}`;
+  s.textContent = `#pme-overlay{position:fixed;top:12px;right:12px;z-index:2147483647;background:rgba(0,0,0,0.8);color:#fff;padding:10px 12px;border-radius:10px;font-size:18px;line-height:1.1;font-family:Arial,Helvetica,sans-serif;max-width:520px;pointer-events:none}#pme-overlay .pme-header{margin:0 0 8px 0;display:flex;gap:12px;align-items:center;opacity:0.9}#pme-overlay .pme-header .pme-name{font-weight:700}#pme-overlay .pme-col-title{font-size:14px;opacity:0.85;min-width:74px;text-align:center}#pme-overlay .pme-line{margin:6px 0;display:flex;gap:12px;align-items:center}#pme-overlay .pme-name{opacity:0.95;font-size:18px;min-width:120px}#pme-overlay .pme-cols{display:flex;gap:8px;align-items:center}#pme-overlay .pme-val{font-weight:900;font-size:20px;padding:2px 8px;border-radius:6px;color:#fff;min-width:74px;text-align:center}#pme-overlay .pme-super{background:#27ae60}#pme-overlay .pme-not-very{background:#e67e22}#pme-overlay .pme-immune{background:#c0392b}#pme-overlay .pme-neutral{background:#7f8c8d}`;
   document.head.appendChild(s);
   const d = document.createElement("div");
   d.id = "pme-overlay";
@@ -16,10 +16,10 @@ export function ensureOverlay(): HTMLElement {
 export function updateOverlay(
   movesInfo: Array<{
     name?: string | null;
-    text?: string;
-    cls?: string;
     id?: number;
-  }>
+    values: Array<{ text: string; cls: string }>;
+  }>,
+  enemyNames: string[]
 ) {
   const overlay = ensureOverlay();
   // currentUiMode is managed by the orchestrator; overlay only shows in FIGHT mode
@@ -31,17 +31,41 @@ export function updateOverlay(
     return;
   }
   overlay.innerHTML = "";
+  if (Array.isArray(enemyNames) && enemyNames.length > 0) {
+    const header = document.createElement("div");
+    header.className = "pme-header";
+    const moveLabel = document.createElement("div");
+    moveLabel.className = "pme-name";
+    moveLabel.textContent = "Move";
+    const cols = document.createElement("div");
+    cols.className = "pme-cols";
+    for (const en of enemyNames) {
+      const colTitle = document.createElement("div");
+      colTitle.className = "pme-col-title";
+      colTitle.textContent = en || "Enemy";
+      cols.appendChild(colTitle);
+    }
+    header.appendChild(moveLabel);
+    header.appendChild(cols);
+    overlay.appendChild(header);
+  }
   for (const mi of movesInfo) {
     const line = document.createElement("div");
     line.className = "pme-line";
     const name = document.createElement("div");
     name.className = "pme-name";
     name.textContent = mi.name || "(unknown)";
-    const val = document.createElement("div");
-    val.className = `pme-val ${mi.cls || ""}`;
-    val.textContent = mi.text || "";
+    const cols = document.createElement("div");
+    cols.className = "pme-cols";
+    const values = Array.isArray(mi.values) ? mi.values : [];
+    for (const v of values) {
+      const val = document.createElement("div");
+      val.className = `pme-val ${v.cls || ""}`;
+      val.textContent = v.text || "";
+      cols.appendChild(val);
+    }
     line.appendChild(name);
-    line.appendChild(val);
+    line.appendChild(cols);
     overlay.appendChild(line);
   }
   overlay.style.display = "block";
