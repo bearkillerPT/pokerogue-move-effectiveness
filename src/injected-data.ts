@@ -1,34 +1,10 @@
-import type { SavedSession, Party, Moveset } from "./types";
 import moves from "./data/moves.js";
 import pokedex from "./data/pokedex.js";
 import moveTypes from "./data/move-types.js";
 
 type MoveLookupValue = { name?: string | null; type?: string | null };
-
-const _moveLookupCache: WeakMap<
-  object,
-  Map<number, MoveLookupValue>
-> = new WeakMap();
 let _externalMoveMap: Map<number, MoveLookupValue> | null = null;
 
-export function getMoveLookup(
-  session: SavedSession | null
-): Map<number, MoveLookupValue> {
-  if (!session || typeof session !== "object") return new Map();
-  const cached = _moveLookupCache.get(session as object);
-  if (cached) return cached;
-  const map: Map<number, MoveLookupValue> = new Map();
-
-  try {
-    const ext = getExternalMoveMap();
-    for (const [id, val] of ext.entries()) map.set(id, val);
-  } catch (e) {
-    // ignore
-  }
-
-  _moveLookupCache.set(session, map);
-  return map;
-}
 
 export function getExternalMoveMap(): Map<number, MoveLookupValue> {
   if (_externalMoveMap) return _externalMoveMap;
@@ -78,40 +54,6 @@ export function multiplierClass(m: number): string {
   return "pme-neutral";
 }
 
-export function buildMovesInfo(
-  moves: Array<Moveset | number>,
-  moveLookup: Map<number, MoveLookupValue>,
-  enemyTypes: string[][]
-): Array<{ name?: string | null; id?: number; values: Array<{ text: string; cls: string }> }> {
-  const out: Array<{
-    name?: string | null;
-    id?: number;
-    values: Array<{ text: string; cls: string }>;
-  }> = [];
-  for (const m of moves) {
-    const id =
-      typeof m === "number"
-        ? m
-        : "moveId" in (m as Moveset)
-        ? (m as Moveset).moveId
-        : undefined;
-    let name: string | null | undefined;
-    let mType: string | null | undefined;
-    if (id != null) {
-      const resolved = moveLookup.get(Number(id));
-      if (resolved) {
-        name = resolved.name;
-        mType = resolved.type;
-      }
-    }
-    const values = (enemyTypes || []).map((typesForEnemy) => {
-      const mult = getMultiplier(mType, typesForEnemy || []);
-      return { text: formatMultiplier(mult), cls: multiplierClass(mult) };
-    });
-    out.push({ name, id: id as number | undefined, values });
-  }
-  return out;
-}
 
 export function deriveEnemyTypes(enemyPokemons: string[]): string[][] {
   return enemyPokemons

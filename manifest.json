@@ -13,7 +13,7 @@
 
   "web_accessible_resources": [
     {
-      "resources": ["src/styles.css", "dist/*"],
+      "resources": ["dist/*"],
       "matches": ["https://pokerogue.net/*"]
     }
   ]
