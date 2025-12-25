@@ -1,11 +1,16 @@
 {
   "manifest_version": 3,
   "name": "PokeRogue Move Effectiveness",
+  "description": "Adds an overlay that shows the effectiveness of each move against the enemy's types in PokeRogue for single and double battles!",
+  "icons": {
+    "128": "icon.png"
+  },
   "version": "0.1.0",
 
   "content_scripts": [
     {
       "matches": ["https://pokerogue.net/*"],
+      "css": ["src/styles/overlay.css"],
       "js": ["dist/content.js"],
       "run_at": "document_start"
     }
