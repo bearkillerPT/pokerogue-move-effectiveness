@@ -2,7 +2,7 @@
 This is a Chrome extension that adds an overlay that shows the effectiveness of each available move against the enemy's types.
 
 ## Current state
-The extension is working and published on the [Chrome Web Store](https://chrome.google.com/webstore/detail/pokerogue-move-effectivenes/lfjfbgbfdfpcgkigjlnacmfgblfomjla). It currently supports single and double battles against wild pokemon and trainers.
+The extension is working and published on the [Chrome Web Store](https://chromewebstore.google.com/detail/pokerogue-move-effectiven/eddppccaklpaijbchhhilfghgnigflco). It currently supports single and double battles against wild pokemon and trainers.
 
 ## Local Development
 Since this project uses TypeScript, you're required to compile it to JavaScript before you can load it into Chrome. The `build` script in `package.json` will do this for you while automatically watching for changes.
